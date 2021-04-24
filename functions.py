@@ -6,9 +6,10 @@ def databaseentry(username,air,ir):
     try:
         with con:
                     cur = con.cursor()
-                    cur.execute('INSERT INTO maskaware (username,air, ir) VALUES ( ?, ?, ?)', (username,air,ir))
+                    cur.execute('INSERT OR IGNORE INTO maskaware (username, air,ir) VALUES ( ?, ?, ?)', (username,air,ir))
+                    cur.execute('UPDATE maskaware SET air = ?, ir = ? WHERE username= ?', (air,ir,username))
                     con.commit()
-        params['status'] = "success"
+        params['status'] = "success"       
     except:
         params['status'] = "fail"
     return params
